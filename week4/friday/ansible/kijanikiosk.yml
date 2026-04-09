@@ -1,0 +1,64 @@
+---
+- name: Configure Kijani Kiosk
+  hosts: kijanikiosk
+  become: true
+
+  vars:
+    ansible_user: ubuntu
+    ansible_ssh_private_key_file: ~/.ssh/kijanikiosk.pem
+    base_dir: /opt/kijanikiosk
+    service_group: kijanikiosk
+    service_user: kijanikiosk
+    service_name: kijanikiosk-app
+    packages:
+      - nginx
+      - ufw
+      - logrotate
+
+  handlers:
+    - name: Restart service
+      ansible.builtin.systemd:
+        name: "{{ service_name }}"
+        state: restarted
+
+  tasks:
+    - name: Install packages
+      ansible.builtin.apt:
+        name: "{{ packages }}"
+        update_cache: true
+        state: present
+
+    - name: Create service group
+      ansible.builtin.group:
+        name: "{{ service_group }}"
+        state: present
+
+    - name: Create service user
+      ansible.builtin.user:
+        name: "{{ service_user }}"
+        group: "{{ service_group }}"
+        system: true
+
+    - name: Create directories
+      ansible.builtin.file:
+        path: "{{ base_dir }}/{{ item }}"
+        state: directory
+        owner: "{{ service_user }}"
+        group: "{{ service_group }}"
+        mode: '0755'
+      loop:
+        - bin
+        - config
+        - logs
+
+    - name: Create systemd template
+      ansible.builtin.template:
+        src: service.j2
+        dest: "/etc/systemd/system/{{ service_name }}.service"
+      notify: Restart service
+
+    - name: Enable and start service
+      ansible.builtin.systemd:
+        name: "{{ service_name }}"
+        enabled: true
+        daemon_reload: true
