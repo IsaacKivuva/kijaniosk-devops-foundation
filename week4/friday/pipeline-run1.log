@@ -1,0 +1,74 @@
+Running Terraform...
+[0m[1mdata.aws_ami.ubuntu: Reading...[0m[0m
+[0m[1maws_security_group.app: Refreshing state... [id=sg-00d7c8ca82bad382e][0m
+[0m[1mdata.aws_ami.ubuntu: Read complete after 1s [id=ami-04b5f5e2805b0065b][0m
+[0m[1mmodule.app_servers["payments"].aws_instance.this: Refreshing state... [id=i-08b5ad2a8ace8ae73][0m
+[0m[1mmodule.app_servers["logs"].aws_instance.this: Refreshing state... [id=i-090f356643eabb986][0m
+[0m[1mmodule.app_servers["api"].aws_instance.this: Refreshing state... [id=i-01b0793432ccc2c55][0m
+
+[0m[1m[32mNo changes.[0m[1m Your infrastructure matches the configuration.[0m
+
+[0mTerraform has compared your real infrastructure against your configuration
+and found no differences, so no changes are needed.
+[0m[1m[32m
+Apply complete! Resources: 0 added, 0 changed, 0 destroyed.[0m
+[0m[1m[32m
+Outputs:
+
+[0mapi_server_ip = "15.240.51.69"
+logs_server_ip = "13.245.9.93"
+payments_server_ip = "16.28.61.188"
+server_ips = {
+  "api" = "15.240.51.69"
+  "logs" = "13.245.9.93"
+  "payments" = "16.28.61.188"
+}
+Writing inventory...
+Running Ansible...
+
+PLAY [Configure Kijani Kiosk] **************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [api]
+ok: [payments]
+ok: [logs]
+
+TASK [Install packages] ********************************************************
+changed: [api]
+changed: [payments]
+changed: [logs]
+
+TASK [Create service group] ****************************************************
+changed: [payments]
+changed: [logs]
+changed: [api]
+
+TASK [Create service user] *****************************************************
+changed: [api]
+changed: [logs]
+changed: [payments]
+
+TASK [Create directories] ******************************************************
+changed: [logs] => (item=bin)
+changed: [payments] => (item=bin)
+changed: [api] => (item=bin)
+changed: [payments] => (item=config)
+changed: [logs] => (item=config)
+changed: [api] => (item=config)
+changed: [payments] => (item=logs)
+changed: [api] => (item=logs)
+changed: [logs] => (item=logs)
+
+TASK [Create systemd template] *************************************************
+An exception occurred during task execution. To see the full traceback, use -vvv. The error was: If you are using a module and expect the file to exist on the remote, see the remote_src option
+fatal: [api]: FAILED! => {"changed": false, "msg": "Could not find or access 'service.j2'\nSearched in:\n\t/home/vivovuva/developement/dev_ops/kijaniosk-devops-foundation/week4/friday/ansible/templates/service.j2\n\t/home/vivovuva/developement/dev_ops/kijaniosk-devops-foundation/week4/friday/ansible/service.j2\n\t/home/vivovuva/developement/dev_ops/kijaniosk-devops-foundation/week4/friday/ansible/templates/service.j2\n\t/home/vivovuva/developement/dev_ops/kijaniosk-devops-foundation/week4/friday/ansible/service.j2 on the Ansible Controller.\nIf you are using a module and expect the file to exist on the remote, see the remote_src option"}
+An exception occurred during task execution. To see the full traceback, use -vvv. The error was: If you are using a module and expect the file to exist on the remote, see the remote_src option
+fatal: [payments]: FAILED! => {"changed": false, "msg": "Could not find or access 'service.j2'\nSearched in:\n\t/home/vivovuva/developement/dev_ops/kijaniosk-devops-foundation/week4/friday/ansible/templates/service.j2\n\t/home/vivovuva/developement/dev_ops/kijaniosk-devops-foundation/week4/friday/ansible/service.j2\n\t/home/vivovuva/developement/dev_ops/kijaniosk-devops-foundation/week4/friday/ansible/templates/service.j2\n\t/home/vivovuva/developement/dev_ops/kijaniosk-devops-foundation/week4/friday/ansible/service.j2 on the Ansible Controller.\nIf you are using a module and expect the file to exist on the remote, see the remote_src option"}
+An exception occurred during task execution. To see the full traceback, use -vvv. The error was: If you are using a module and expect the file to exist on the remote, see the remote_src option
+fatal: [logs]: FAILED! => {"changed": false, "msg": "Could not find or access 'service.j2'\nSearched in:\n\t/home/vivovuva/developement/dev_ops/kijaniosk-devops-foundation/week4/friday/ansible/templates/service.j2\n\t/home/vivovuva/developement/dev_ops/kijaniosk-devops-foundation/week4/friday/ansible/service.j2\n\t/home/vivovuva/developement/dev_ops/kijaniosk-devops-foundation/week4/friday/ansible/templates/service.j2\n\t/home/vivovuva/developement/dev_ops/kijaniosk-devops-foundation/week4/friday/ansible/service.j2 on the Ansible Controller.\nIf you are using a module and expect the file to exist on the remote, see the remote_src option"}
+
+PLAY RECAP *********************************************************************
+api                        : ok=5    changed=4    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+logs                       : ok=5    changed=4    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+payments                   : ok=5    changed=4    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+
