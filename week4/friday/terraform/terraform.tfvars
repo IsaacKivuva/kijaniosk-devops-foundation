@@ -1,7 +1,7 @@
 region        = "af-south-1"
 instance_type = "t3.micro"
 ssh_key_name  = "test"
-ssh_cidr    = "105.161.130.229/32"
+ssh_cidr    = "105.164.117.48/32"
 
 
 

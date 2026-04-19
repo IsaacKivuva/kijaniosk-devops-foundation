@@ -22,7 +22,7 @@ data "aws_ami" "ubuntu" {
 }
 
 resource "aws_security_group" "app" {
-  name = "kijanikiosk-sg"
+  name = "jenkins-app-sg"
 
   ingress {
     description = "SSH"
