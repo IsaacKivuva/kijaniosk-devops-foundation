@@ -1,9 +1,9 @@
 terraform {
   backend "s3" {
-    bucket         = "kijanikiosk-terraform-state-2111-2550-8279"
-    key            = "week4/friday/terraform.tfstate"
+    bucket         = "week5-jenkins-2111-2550-8279"
+    key            = "week5/jenkins"
     region         = "af-south-1"
-    dynamodb_table = "kijanikiosk-terraform-locks"
+    dynamodb_table = "jenkins-2111-2550-8279"
     encrypt        = true
   }
 }
